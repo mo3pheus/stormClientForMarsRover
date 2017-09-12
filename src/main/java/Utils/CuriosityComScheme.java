@@ -11,7 +11,7 @@ import java.nio.ByteBuffer;
 import java.util.List;
 
 public class CuriosityComScheme implements Scheme {
-    public static final String CURIOSITY_MESSAGES = "Curiosity_Messages";
+    public static final String CURIOSITY_MESSAGES = "Curiosity_Messages1";
 
     @Override
     public List<Object> deserialize(ByteBuffer byteBuffer) {
