@@ -33,10 +33,16 @@ public class TopologySubmitter {
         );
 
         spoutConfig.scheme = new SchemeAsMultiScheme(new CuriosityComScheme());
+        spoutConfig.startOffsetTime = kafka.api.OffsetRequest.LatestTime();
         KafkaSpout kafkaSpout = new KafkaSpout(spoutConfig);
 
+        System.out.println("======================================================================");
+        System.out.println("New kafka spout created.");
+        System.out.println("======================================================================");
+
         topologyBuilder.setSpout("kafka_spout", kafkaSpout, 1);
-        topologyBuilder.setBolt("preliminaryFilterBolt", new InterceptConsole());
+        topologyBuilder.setBolt("preliminaryFilterBolt", new InterceptConsole()).globalGrouping
+                ("kafka_spout").setDebug(true);
 
         config.setNumWorkers(2);
         config.setMaxSpoutPending(5000);
