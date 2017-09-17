@@ -50,6 +50,10 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.slf4j:log4j-over-slf4j:1.6.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.21" level="project" />
+    <orderEntry type="library" name="Maven: naasa.gov:mission.control:0.0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.tensorflow:tensorflow:1.1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.tensorflow:libtensorflow:1.1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.tensorflow:libtensorflow_jni:1.1.0" level="project" />
     <orderEntry type="library" name="Maven: space.exploration:mars.rover:0.0.1-SOLSHOT" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.6" level="project" />
   </component>

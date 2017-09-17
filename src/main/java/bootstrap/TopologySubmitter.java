@@ -1,6 +1,11 @@
 package bootstrap;
 
-import Utils.CuriosityComScheme;
+import bolts.camera.Darkroom;
+import bolts.diagnostics.HeartbeatMonitor;
+import bolts.lidar.ObstacleDetector;
+import bolts.radar.RadarChart;
+import bolts.spectrometer.SpectrometerConsole;
+import utils.CuriosityComScheme;
 import bolts.InterceptConsole;
 import org.apache.storm.Config;
 import org.apache.storm.StormSubmitter;
@@ -9,12 +14,10 @@ import org.apache.storm.kafka.ZkHosts;
 import org.apache.storm.kafka.KafkaSpout;
 import org.apache.storm.spout.SchemeAsMultiScheme;
 import org.apache.storm.topology.TopologyBuilder;
-import org.apache.storm.LocalCluster;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 public class TopologySubmitter {
 
@@ -23,7 +26,6 @@ public class TopologySubmitter {
         TopologyBuilder topologyBuilder = new TopologyBuilder();
 
         Config config = new Config();
-
 
         SpoutConfig spoutConfig = new SpoutConfig(
                 new ZkHosts(kafkaProperties.getProperty("zkConnectString")),
@@ -42,21 +44,21 @@ public class TopologySubmitter {
 
         topologyBuilder.setSpout("kafka_spout", kafkaSpout, 1);
         topologyBuilder.setBolt("preliminaryFilterBolt", new InterceptConsole()).globalGrouping
-                ("kafka_spout").setDebug(true);
+                ("kafka_spout").setDebug(false);
+        topologyBuilder.setBolt("spectrometerBolt", new SpectrometerConsole()).globalGrouping
+                ("preliminaryFilterBolt", "SpectrometerConsole").setDebug(false);
+        topologyBuilder.setBolt("radarBolt", new RadarChart()).globalGrouping
+                ("preliminaryFilterBolt", "RadarChart").setDebug(false);
+        topologyBuilder.setBolt("lidarBolt", new ObstacleDetector()).globalGrouping
+                ("preliminaryFilterBolt", "ObstacleDetector").setDebug(false);
+        topologyBuilder.setBolt("diagnosticsBolt", new HeartbeatMonitor()).globalGrouping
+                ("preliminaryFilterBolt", "HeartbeatMonitor").setDebug(false);
+        topologyBuilder.setBolt("cameraBolt", new Darkroom()).globalGrouping
+                ("preliminaryFilterBolt", "Darkroom").setDebug(false);
 
-        config.setNumWorkers(2);
+        config.setNumWorkers(6);
         config.setMaxSpoutPending(5000);
         StormSubmitter.submitTopology("myTopology", config, topologyBuilder.createTopology());
-
-//        LocalCluster localCluster = new LocalCluster();
-//        try {
-//            localCluster.submitTopology("houston_to_curiosity_comCenter", config, topologyBuilder.createTopology());
-//        } catch (Exception e) {
-//            System.out.println("This is the application catching the exception");
-//            e.printStackTrace();
-//        }
-//        Thread.sleep(TimeUnit.DAYS.toMillis(1));
-//        localCluster.shutdown();
     }
 
 

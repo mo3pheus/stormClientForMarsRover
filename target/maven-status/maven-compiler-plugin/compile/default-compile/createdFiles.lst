@@ -1,5 +1,9 @@
 bootstrap/TopologySubmitter.class
-bolts/SpectrometerConsole.class
+utils/CuriosityComScheme.class
+bolts/spectrometer/SpectrometerConsole.class
+bolts/camera/Darkroom.class
+bolts/radar/RadarChart.class
+bolts/diagnostics/HeartbeatMonitor.class
 bootstrap/RoverControl.class
-Utils/CuriosityComScheme.class
+bolts/lidar/ObstacleDetector.class
 bolts/InterceptConsole.class
